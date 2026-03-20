@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Cámara Perfumes</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-900 flex flex-col items-center justify-center h-screen text-white">
+
+  <h1 class="text-3xl mb-6">📸 Cámara Perfumes</h1>
+
+  <div class="relative w-40 h-40 mb-4">
+    <button id="camButton" class="absolute w-20 h-20 rounded-full bg-yellow-400 animate-bounce">📷</button>
+  </div>
+
+  <p id="msg" class="text-xl mb-4 hidden">Ríe 😄</p>
+
+  <video id="video" class="w-64 h-48 mb-4 hidden" autoplay></video>
+  <canvas id="canvas" class="w-64 h-48 hidden border"></canvas>
+
+  <button id="takePhoto" class="bg-green-500 px-4 py-2 rounded hidden">Tomar foto</button>
+
+  <script>
+    const camButton = document.getElementById('camButton')
+    const msg = document.getElementById('msg')
+    const video = document.getElementById('video')
+    const canvas = document.getElementById('canvas')
+    const takePhoto = document.getElementById('takePhoto')
+
+    camButton.addEventListener('click', async () => {
+      msg.classList.remove('hidden')
+      video.classList.remove('hidden')
+      takePhoto.classList.remove('hidden')
+
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+      video.srcObject = stream
+    })
+
+    takePhoto.addEventListener('click', () => {
+      canvas.classList.remove('hidden')
+      const context = canvas.getContext('2d')
+      context.drawImage(video, 0, 0, canvas.width, canvas.height)
+    })
+  </script>
+
+</body>
+</html>
